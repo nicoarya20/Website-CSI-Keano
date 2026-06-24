@@ -1,1 +1,21 @@
+# Video
 *.mov
+*.mp4
+*.avi
+*.mkv
+*.webm
+*.m4v
+
+# Image
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.ico
+*.bmp
+*.tiff
+*.tif
+*.heic
+*.heif
