@@ -1,21 +1,22 @@
-# Video
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# Secrets / env
+.env
+.env.*
+
+# Heavy media (raw video + extracted frame dumps — keep out of repo)
 *.mov
 *.mp4
 *.avi
 *.mkv
 *.webm
 *.m4v
+Deployment-assets/frames/
+**/frames/
+screencapture-*.png
 
-# Image
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.webp
-*.svg
-*.ico
-*.bmp
-*.tiff
-*.tif
-*.heic
-*.heif
+# Web assets ARE tracked (logo, founder/careers photos, etc.).
+# Add specific heavy files below if needed, e.g.:
+# assets/raw/*.psd
