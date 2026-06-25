@@ -129,7 +129,8 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
 .achievement-item:last-child { border-bottom: 1px solid #262626; }
 .achievement-list.has-hover .achievement-item:not(.is-hovered) { opacity: 0.2; }
 .founder-card { display: flex; align-items: flex-start; gap: 12px; padding: 10px 14px; border: 1px solid #1F1F1F; background: #111; align-self: flex-start; }
-.thumb { width: 40px; height: 40px; flex-shrink: 0; background: #222; border: 1px solid #2A2A2A; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #333; }
+.thumb { width: 40px; height: 40px; flex-shrink: 0; background: #222; border: 1px solid #2A2A2A; overflow: hidden; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center 22%; display: block; }
 .card-info { display: flex; flex-direction: column; gap: 3px; padding-top: 2px; }
 .card-name { font-size: 12px; font-weight: 500; color: #D0D0D0; letter-spacing: 0.01em; }
 .card-title { font-size: 9px; color: #444; letter-spacing: 0.1em; text-transform: uppercase; }
@@ -150,8 +151,7 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
 #floating-img { width: 240px; height: 320px; transform: scale(0.05); opacity: 0; transition: opacity 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); }
 #floating-img.visible { opacity: 1; transform: scale(1); }
 #floating-img.hiding { opacity: 0; transform: scale(0.05); transition: opacity 0.2s ease, transform 0.2s ease; }
-.fp-placeholder { width: 100%; height: 100%; background: #262626; border: 1px solid #2A2A2A; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; color: #3A3A3A; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
-.fp-placeholder .fp-icon { font-size: 28px; color: #2A2A2A; }
+#floating-img img { width: 100%; height: 100%; object-fit: cover; display: block; background: #161616; }
 
 /* ══════════════════════
    DEPLOYMENTS
@@ -159,6 +159,9 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
 #deployments { position: relative; height: 100vh; overflow: hidden; }
 .arc-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 .arc-path { fill: none; stroke: rgba(255,255,255,0.085); stroke-width: 1; }
+.arc-guide { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 1; }
+.arc-tick { stroke: rgba(255,255,255,0.10); stroke-width: 1; }
+.arc-tick.major { stroke: rgba(255,255,255,0.20); }
 .deploy-left { position: absolute; top: 0; left: 0; width: 38%; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 0 2.5vw; z-index: 2; pointer-events: none; }
 .deploy-section-label { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: #2A2A2A; margin-bottom: 28px; }
 .deploy-headline { font-size: clamp(28px, 2.6vw, 42px); font-weight: 300; letter-spacing: -0.025em; color: #D0D0D0; line-height: 1.25; margin-bottom: 48px; }
@@ -218,12 +221,22 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
 .role-item.entry-visible { opacity: 1; transform: none; }
 .roles-list.has-active .role-item:not(.is-active) { opacity: 0.2; transition: opacity 0.35s ease; }
 .roles-list.has-active .role-item.is-active { opacity: 1; transition: opacity 0.35s ease; }
-.role-header { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 28px 0; user-select: none; }
-.role-title { font-size: clamp(32px, 3.2vw, 48px); font-weight: 300; letter-spacing: -0.025em; color: #D0D0D0; transition: color 0.25s ease; position: relative; z-index: 1; }
-.role-item.is-active .role-title, .role-item:hover .role-title { color: #F0F0F0; }
+.role-header { position: relative; overflow: hidden; display: flex; align-items: center; padding: 28px clamp(10px, 1.4vw, 26px); user-select: none; }
+.role-header::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255,255,255,0.025), rgba(255,255,255,0) 55%); opacity: 0; transition: opacity 0.3s ease; z-index: 0; pointer-events: none; }
+.role-item:hover .role-header::after { opacity: 1; }
+.role-item.is-active .role-header::after { opacity: 0; }
+.role-index { font-size: 12px; font-weight: 400; letter-spacing: 0.1em; color: #2E2E2E; font-variant-numeric: tabular-nums; width: clamp(36px, 3.5vw, 56px); flex-shrink: 0; align-self: flex-start; padding-top: 0.35em; position: relative; z-index: 1; transition: color 0.3s ease; }
+.role-item:hover .role-index { color: #666; }
+.role-item.is-active .role-index { color: #666; }
+.role-title { font-size: clamp(32px, 3.2vw, 48px); font-weight: 300; letter-spacing: -0.025em; color: #D0D0D0; transition: color 0.25s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); position: relative; z-index: 1; }
+.role-item:hover .role-title { color: #F0F0F0; transform: translateX(12px); }
+.role-item.is-active .role-title { color: #F0F0F0; transform: none; }
+.role-meta { margin-left: auto; font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: #313131; white-space: nowrap; position: relative; z-index: 1; padding-right: 28px; transition: color 0.3s ease; }
+.role-item:hover .role-meta { color: #5A5A5A; }
+.role-item.is-active .role-meta { color: #5A5A5A; }
 .role-arrow { font-size: 16px; color: #2A2A2A; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s ease; flex-shrink: 0; position: relative; z-index: 3; }
-.role-item.is-active .role-arrow { transform: rotate(90deg); color: #555; }
-.role-item:hover .role-arrow { color: #444; }
+.role-item:hover .role-arrow { color: #888; }
+.role-item.is-active .role-arrow { color: #555; transform: rotate(90deg); }
 .role-preview { position: absolute; top: 0; bottom: 0; width: 200px; transform: translateX(-50%); pointer-events: none; opacity: 0; z-index: 2; will-change: left; overflow: hidden; }
 .role-preview::before, .role-preview::after { content: ''; position: absolute; top: 0; bottom: 0; width: 50%; background: #0A0A0A; z-index: 1; transform: translateX(0); transition: transform 0.26s cubic-bezier(0.4, 0, 1, 1); }
 .role-preview::before { left: 0; }
@@ -236,12 +249,13 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
 .preview-3 .preview-inner { background: linear-gradient(135deg, #14100A 0%, #261A0C 100%); }
 .preview-4 .preview-inner { background: linear-gradient(135deg, #0A1416 0%, #0E2028 100%); }
 .role-body { height: 0; overflow: hidden; transition: height 0.55s cubic-bezier(0.4, 0, 0.2, 1); }
-.role-body-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; padding-bottom: 56px; }
+.role-body-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; padding: 0 clamp(10px, 1.4vw, 26px) 56px; }
 .role-overview { font-size: clamp(13px, 1.1vw, 15px); color: #555; line-height: 1.75; font-weight: 300; padding-top: 2px; }
 .role-right { display: flex; flex-direction: column; gap: 28px; justify-content: space-between; }
-.role-req-label { font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: #2A2A2A; margin-bottom: 14px; }
-.role-tags { display: flex; flex-wrap: wrap; gap: 7px; }
-.role-tag { font-size: 9.5px; letter-spacing: 0.07em; text-transform: uppercase; color: #3A3A3A; border: 1px solid #262626; padding: 5px 11px; }
+.role-req-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: #555; margin-bottom: 18px; }
+.role-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.role-tag { font-size: 11px; letter-spacing: 0.07em; text-transform: uppercase; color: #6A6A6A; border: 1px solid #303030; padding: 7px 13px; cursor: default; transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease; }
+.role-tag:hover { color: #EAEAEA; border-color: #4A4A4A; background: rgba(255,255,255,0.04); }
 .role-cta { display: inline-flex; align-items: center; gap: 10px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #555; text-decoration: none; transition: color 0.2s ease, gap 0.25s ease; align-self: flex-start; padding-top: 4px; }
 .role-cta:hover { color: #E8E8E8; gap: 18px; }
 .app-flow-wrap { opacity: 0; transform: translateY(10px); transition: opacity 0.7s ease, transform 0.7s ease; }
@@ -383,7 +397,7 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
 <div id="custom-cursor"></div>
 <div id="floating-wrapper">
   <div id="floating-img">
-    <div class="fp-placeholder"><span class="fp-icon">◉</span>Foto Founder</div>
+    <img id="floating-photo" src="" alt="">
   </div>
 </div>
 
@@ -398,9 +412,9 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
   <!-- Founder -->
   <section id="founder">
 <div class="achievement-list" id="achievementList">
-      <div class="achievement-item">
+      <div class="achievement-item" data-photo="Photo-Founder-section/Foto Award.jpeg">
         <div class="founder-card">
-          <div class="thumb">◉</div>
+          <div class="thumb"><img src="Photo-Founder-section/Photo profile.jpg" alt="Fami Maliki"></div>
           <div class="card-info"><span class="card-name">Fami Maliki</span><span class="card-title">Founder &amp; CEO</span></div>
         </div>
         <div class="item-content">
@@ -408,9 +422,9 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
           <div class="item-meta"><span>Award</span><span class="mdot"></span><span>Digital Innovation</span><span class="mdot"></span><span>2023</span><span class="arrow">↗</span></div>
         </div>
       </div>
-      <div class="achievement-item">
+      <div class="achievement-item" data-photo="Photo-Founder-section/Foto Speaking.jpg">
         <div class="founder-card">
-          <div class="thumb">◉</div>
+          <div class="thumb"><img src="Photo-Founder-section/Photo profile.jpg" alt="Fami Maliki"></div>
           <div class="card-info"><span class="card-name">Fami Maliki</span><span class="card-title">Founder &amp; CEO</span></div>
         </div>
         <div class="item-content">
@@ -423,7 +437,12 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
 
   <!-- Selected Deployments -->
   <section id="deployments">
-    <svg class="arc-svg" id="arcSvg"><path class="arc-path" id="arcPath" d=""/></svg>
+    <svg class="arc-svg" id="arcSvg">
+      <path class="arc-guide" id="arcGuideInner" d=""/>
+      <path class="arc-guide" id="arcGuideOuter" d=""/>
+      <g id="arcTicks"></g>
+      <path class="arc-path" id="arcPath" d=""/>
+    </svg>
     <div class="deploy-left">
       <h2 class="deploy-headline">Built for real-world environments where decisions matter.</h2>
       <div class="deploy-copy-wrap" id="deployCopyWrap">
@@ -478,7 +497,9 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
     <div class="roles-list" id="rolesList">
       <div class="role-item">
         <div class="role-header">
-          <span class="role-title">Innovation &amp; Growth Manager</span><span class="role-arrow">→</span>
+          <span class="role-index">01</span>
+          <span class="role-title">Innovation &amp; Growth Manager</span>
+          <span class="role-meta">Full-time · Remote · Growth</span><span class="role-arrow">→</span>
           <div class="role-preview preview-1"><div class="preview-inner">◉</div></div>
         </div>
         <div class="role-body"><div class="role-body-inner">
@@ -491,7 +512,9 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
       </div>
       <div class="role-item">
         <div class="role-header">
-          <span class="role-title">Technical Lead</span><span class="role-arrow">→</span>
+          <span class="role-index">02</span>
+          <span class="role-title">Technical Lead</span>
+          <span class="role-meta">Full-time · Hybrid · Engineering</span><span class="role-arrow">→</span>
           <div class="role-preview preview-2"><div class="preview-inner">◉</div></div>
         </div>
         <div class="role-body"><div class="role-body-inner">
@@ -504,7 +527,9 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
       </div>
       <div class="role-item">
         <div class="role-header">
-          <span class="role-title">Product Builder</span><span class="role-arrow">→</span>
+          <span class="role-index">03</span>
+          <span class="role-title">Product Builder</span>
+          <span class="role-meta">Full-time · Remote · Product</span><span class="role-arrow">→</span>
           <div class="role-preview preview-3"><div class="preview-inner">◉</div></div>
         </div>
         <div class="role-body"><div class="role-body-inner">
@@ -517,7 +542,9 @@ body { background: #0A0A0A; color: #F0F0F0; font-family: 'Inter', -apple-system,
       </div>
       <div class="role-item">
         <div class="role-header">
-          <span class="role-title">Full Stack Engineer</span><span class="role-arrow">→</span>
+          <span class="role-index">04</span>
+          <span class="role-title">Full Stack Engineer</span>
+          <span class="role-meta">Full-time · Hybrid · Engineering</span><span class="role-arrow">→</span>
           <div class="role-preview preview-4"><div class="preview-inner">◉</div></div>
         </div>
         <div class="role-body"><div class="role-body-inner">
@@ -1000,11 +1027,32 @@ function setupScrollAnimations() {
   const DR=DVH*1.2, DAX=DVW*0.50, DCX=DAX-DR, DCY=DVH*0.50;
   const DHALF=Math.asin(Math.min(DVH*0.46/DR,0.999));
   const DSPACING=(DHALF*2*0.9)/(DN-1), DTHRESH=DSPACING*0.55;
+  // visual span: extend past top/bottom edges so the arc bleeds off-screen instead of getting cut
+  const DVISHALF=Math.asin(Math.min(DVH*0.62/DR,0.999));
 
+  function arcPathD(radius,span){
+    const sp=span||DHALF; const pts=[]; const steps=120;
+    for(let i=0;i<=steps;i++){const t=i/steps;const a=sp-t*sp*2;pts.push(`${i===0?'M':'L'} ${(DCX+radius*Math.cos(a)).toFixed(1)},${(DCY+radius*Math.sin(a)).toFixed(1)}`);}
+    return pts.join(' ');
+  }
   (function buildArc(){
-    const pts=[]; const steps=100;
-    for(let i=0;i<=steps;i++){const t=i/steps;const a=DHALF-t*DHALF*2;pts.push(`${i===0?'M':'L'} ${(DCX+DR*Math.cos(a)).toFixed(1)},${(DCY+DR*Math.sin(a)).toFixed(1)}`);}
-    document.getElementById('arcPath').setAttribute('d',pts.join(' '));
+    document.getElementById('arcPath').setAttribute('d',arcPathD(DR,DVISHALF));
+    document.getElementById('arcGuideInner').setAttribute('d',arcPathD(DR-20,DVISHALF));
+    document.getElementById('arcGuideOuter').setAttribute('d',arcPathD(DR+26,DVISHALF));
+    // tick marks perpendicular to the arc — minor across the span, major at sector slots
+    const g=document.getElementById('arcTicks'), NS='http://www.w3.org/2000/svg';
+    const TICKS=40;
+    const majorAt=new Set();
+    for(let s=0;s<DN;s++) majorAt.add(Math.round(((s*DSPACING)+DHALF)/(DHALF*2)*TICKS));
+    for(let i=0;i<=TICKS;i++){
+      const a=DHALF-(i/TICKS)*DHALF*2, ca=Math.cos(a), sa=Math.sin(a);
+      const major=majorAt.has(i), len=major?13:6, r0=DR-len, r1=DR+len;
+      const ln=document.createElementNS(NS,'line');
+      ln.setAttribute('x1',(DCX+r0*ca).toFixed(1)); ln.setAttribute('y1',(DCY+r0*sa).toFixed(1));
+      ln.setAttribute('x2',(DCX+r1*ca).toFixed(1)); ln.setAttribute('y2',(DCY+r1*sa).toFixed(1));
+      ln.setAttribute('class','arc-tick'+(major?' major':''));
+      g.appendChild(ln);
+    }
   })();
 
   let dActiveCopy=-1;
@@ -1025,7 +1073,11 @@ function setupScrollAnimations() {
       item.style.opacity=Math.max(0,1-Math.abs(angle)/(DSPACING*2.8)).toFixed(3);
       if(Math.abs(angle)<DTHRESH) na=i;
     });
-    if(na!==dCurActive){dCurActive=na;DITEMS.forEach((el,i)=>el.classList.toggle('is-active',i===na));dTransCopy(na);}
+    if(na!==dCurActive){
+      dCurActive=na;
+      DITEMS.forEach((el,i)=>el.classList.toggle('is-active',i===na));
+      dTransCopy(na);
+    }
   }
   const dProxy={val:0};
   gsap.to(dProxy,{val:1,ease:'none',scrollTrigger:{trigger:'#deployments',start:'top top',end:`+=${DN*100}%`,scrub:1.4,pin:true,anticipatePin:1,onUpdate:self=>updateArc(self.progress)}});
@@ -1037,6 +1089,7 @@ function setupScrollAnimations() {
   const cursor=document.getElementById('custom-cursor');
   const fw=document.getElementById('floating-wrapper');
   const fi=document.getElementById('floating-img');
+  const fp=document.getElementById('floating-photo');
   const list=document.getElementById('achievementList');
   let mouseX=0,mouseY=0,prevMouseX=0,imgX=0,imgY=0,rotation=0,targetRotation=0;
   document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;cursor.style.left=mouseX+'px';cursor.style.top=mouseY+'px';});
@@ -1065,7 +1118,7 @@ function setupScrollAnimations() {
   });
   document.querySelectorAll('.item-desc').forEach(desc=>{
     const item=desc.closest('.achievement-item'),scrambler=new TextScramble(desc);
-    desc.addEventListener('mouseenter',()=>{scrambler.scramble();cursor.classList.add('is-hovering');fi.classList.remove('hiding');fi.classList.add('visible');list.classList.add('has-hover');item.classList.add('is-hovered');});
+    desc.addEventListener('mouseenter',()=>{scrambler.scramble();cursor.classList.add('is-hovering');const src=item.getAttribute('data-photo');if(src&&fp.getAttribute('src')!==src)fp.setAttribute('src',src);fi.classList.remove('hiding');fi.classList.add('visible');list.classList.add('has-hover');item.classList.add('is-hovered');});
     desc.addEventListener('mouseleave',()=>{scrambler.reset();cursor.classList.remove('is-hovering');fi.classList.remove('visible');fi.classList.add('hiding');list.classList.remove('has-hover');item.classList.remove('is-hovered');});
   });
 })();
