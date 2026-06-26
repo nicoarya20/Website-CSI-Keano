@@ -402,8 +402,10 @@ html.is-touch #floating-wrapper { display: none !important; }
   .cta-headline { font-size: clamp(36px, 9vw, 64px); word-break: break-word; }
   .form-line { flex-direction: column; align-items: stretch; gap: 6px; }
   .form-prose { white-space: normal; padding: 0; text-align: left; }
-  /* a span holding only "." becomes an orphan line when stacked — hide it */
+  /* inline-sentence punctuation (leading comma + trailing period) becomes orphan
+     glyphs once the form stacks vertically — drop them so prose reads as clean labels */
   .form-prose.form-dot { display: none; }
+  .form-comma { display: none; }
   .form-inline { width: 100%; min-width: 0; }
   .form-inline.f-name, .form-inline.f-org, .form-inline.f-email { min-width: 0; }
   .inquiry-pill { min-height: 44px; padding: 0 16px; }
@@ -676,7 +678,7 @@ html.is-touch #floating-wrapper { display: none !important; }
         <div class="form-line">
           <span class="form-prose">My name is</span>
           <input type="text" name="name" class="form-inline f-name" placeholder="your name" aria-label="Name" required>
-          <span class="form-prose">, and I represent</span>
+          <span class="form-prose"><span class="form-comma">, </span>and I represent</span>
           <input type="text" name="org" class="form-inline f-org" placeholder="your organization" aria-label="Organization">
           <span class="form-prose form-dot">.</span>
         </div>
